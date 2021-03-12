@@ -8,7 +8,15 @@ import (
 	"github.com/Logiase/MiraiGo-Template/config"
 	"github.com/Logiase/MiraiGo-Template/utils"
 
+	_ "github.com/Logiase/MiraiGo-Template/modules/joinandquit"
+	_ "github.com/Logiase/MiraiGo-Template/modules/lightapp2urlshare"
 	_ "github.com/Logiase/MiraiGo-Template/modules/logging"
+	_ "github.com/Logiase/MiraiGo-Template/modules/nbnhhsh"
+	_ "github.com/Logiase/MiraiGo-Template/modules/rsspush"
+	_ "github.com/Logiase/MiraiGo-Template/modules/saucenao"
+	_ "github.com/Logiase/MiraiGo-Template/modules/setu"
+	_ "github.com/Logiase/MiraiGo-Template/modules/tracemoe"
+	_ "github.com/Logiase/MiraiGo-Template/modules/translate"
 )
 
 func init() {

@@ -1,3 +1,14 @@
 bot:
   account: 123455667
   password: 3456346sdfgsd
+# 功能均暂不支持代理设置
+managerQQ: 1234567890 #管理者QQ 目前仅有`开启RSS`命令
+saucenaoApikey: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX #搜图 API
+loliconApikey: XXXXXXXXXXXXXXXXXXXXXX #lolicon API
+#rss更新推送
+rss:
+  sendGroupCode: 123456789 #推送的群号
+  pixiv:
+    #此处输入rsshub地址，更新只推送图片，预计rsshub路由均支持，但只测试了twitter与pixiv，下面是填写示例
+    #- https://rsshub.app/twitter/user/aleos696/exclude_rts_replies?filter_description=img
+    
