@@ -108,7 +108,7 @@ func (m *rsspushing) Serve(b *bot.Bot) {
 				for _, url := range urls {
 					var url = url
 					// 添加定时任务
-					task.AddFunc("*/5 * * * * * ", func() {
+					task.AddFunc("* */20 * * * * ", func() {
 						update(url, c)
 					})
 				}
@@ -254,6 +254,8 @@ func getRssInfo(url string) RssInfo {
 	data.LastestDate = ""
 	if rss.Channel.Item != nil {
 		data.LastestDate = rss.Channel.Item[0].PubDate
+	} else {
+		return RssInfo{}
 	}
 	return data
 }
