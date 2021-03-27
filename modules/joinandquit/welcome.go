@@ -47,6 +47,34 @@ func (m *interacting) Serve(b *bot.Bot) {
 		m := message.NewSendingMessage().Append(message.NewText(event.Member.Nickname + "(" + strconv.FormatInt(event.Member.Uin, 10) + ") 离开了，丢人"))
 		c.SendGroupMessage(event.Group.Uin, m)
 	})
+	b.OnGroupMuted(func(c *client.QQClient, event *client.GroupMuteEvent) { //strconv.FormatInt
+		groupInfo := c.FindGroup(event.GroupCode)
+		operatorName := groupInfo.FindMember(event.OperatorUin).DisplayName()
+		targetName := groupInfo.FindMember(event.TargetUin).DisplayName()
+
+		time := ""
+		if event.Time != 0 {
+			second := event.Time / 60
+			if second >= 1440 {
+				day := second / 1440
+				second = second % 1440
+				time += strconv.FormatInt(int64(day), 10) + "天"
+			}
+			if second >= 60 {
+				hour := second / 60
+				second = second % 60
+				time += strconv.FormatInt(int64(hour), 10) + "小时"
+			}
+			if second != 0 {
+				time += strconv.FormatInt(int64(second), 10) + "分钟"
+			}
+			m := message.NewSendingMessage().Append(message.NewText(targetName + "喝下了" + operatorName + "的红茶，昏睡" + time))
+			c.SendGroupMessage(event.GroupCode, m)
+		} else {
+			m := message.NewSendingMessage().Append(message.NewText(targetName + "听见了" + operatorName + "的野兽咆哮，" + "缓缓苏醒过来"))
+			c.SendGroupMessage(event.GroupCode, m)
+		}
+	})
 }
 
 func (m *interacting) Start(b *bot.Bot) {
