@@ -73,6 +73,7 @@ var urls []string
 var rsses = make(map[string]RssInfo)
 var task = cron.New()
 var managerQQ, sendGroupCode int64
+var ttl string
 
 func (m *rsspushing) MiraiGoModule() bot.ModuleInfo {
 	return bot.ModuleInfo{
@@ -88,7 +89,7 @@ func (m *rsspushing) Init() {
 	managerQQ = config.GlobalConfig.GetInt64("managerQQ")
 	urls = config.GlobalConfig.GetStringSlice("rss.pixiv")
 	sendGroupCode = config.GlobalConfig.GetInt64("rss.sendGroupCode")
-
+	ttl = config.GlobalConfig.GetString("rss.ttl")
 }
 
 func (m *rsspushing) PostInit() {
@@ -108,7 +109,7 @@ func (m *rsspushing) Serve(b *bot.Bot) {
 				for _, url := range urls {
 					var url = url
 					// 添加定时任务
-					task.AddFunc("* */20 * * * * ", func() {
+					task.AddFunc("* */"+ttl+" * * * * ", func() {
 						update(url, c)
 					})
 				}

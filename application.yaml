@@ -7,6 +7,7 @@ saucenaoApikey: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX #搜图 API
 loliconApikey: XXXXXXXXXXXXXXXXXXXXXX #lolicon API
 #rss更新推送
 rss:
+  ttl: 20 #访问rsshub时间间隔，单位：分钟，范围：1-60
   sendGroupCode: 123456789 #推送的群号
   pixiv:
     #此处输入rsshub地址，更新只推送图片，预计rsshub路由均支持，但只测试了twitter与pixiv，下面是填写示例
