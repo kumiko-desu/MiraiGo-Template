@@ -109,7 +109,7 @@ func (m *rsspushing) Serve(b *bot.Bot) {
 				for _, url := range urls {
 					var url = url
 					// 添加定时任务
-					task.AddFunc("* */"+ttl+" * * * * ", func() {
+					task.AddFunc("0 */"+ttl+" * * * * ", func() {
 						update(url, c)
 					})
 				}
