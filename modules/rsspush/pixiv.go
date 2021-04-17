@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"regexp"
 	"sync"
+	"time"
 
 	"github.com/Logiase/MiraiGo-Template/bot"
 	"github.com/Logiase/MiraiGo-Template/config"
@@ -64,7 +65,7 @@ type Rss struct {
 //RssInfo Rss + Lastestdate
 type RssInfo struct {
 	Rss         Rss
-	LastestDate string
+	LastestDate time.Time
 }
 
 var on bool = false
@@ -171,12 +172,18 @@ func sendUpdate(c *client.QQClient, imageURLs []string, title string, author str
 func update(url string, c *client.QQClient) {
 	rssinfo := getRssInfo(url)
 	// rssinfo.LastestDate = "Tue, 25 Aug 2020 03:31:34 GMT"
-	if rssinfo.LastestDate != rsses[url].LastestDate {
+	if rssinfo.LastestDate.After(rsses[url].LastestDate) {
 		//检测到rss更新
 		//具体操作
 		for _, it := range rssinfo.Rss.Channel.Item {
 			fmt.Println(it.PubDate, rsses[url].LastestDate)
-			if it.PubDate == rsses[url].LastestDate {
+			pubdate, err := time.Parse("Mon, 02 Jan 2006 15:04:05 MST", it.PubDate)
+			if err != nil {
+				logger.Errorln("时间解析错误")
+				break
+			}
+			//不新于上次保存的最新
+			if !pubdate.After(rsses[url].LastestDate) {
 				break
 			}
 			re := regexp.MustCompile(`https://[^"]*`)
@@ -252,11 +259,18 @@ func getRssInfo(url string) RssInfo {
 		logger.Errorln(err)
 	}
 	data.Rss = rss
-	data.LastestDate = ""
+
 	if rss.Channel.Item != nil {
-		data.LastestDate = rss.Channel.Item[0].PubDate
+		data.LastestDate, err = time.Parse("Mon, 02 Jan 2006 15:04:05 MST", rss.Channel.Item[0].PubDate)
+		if err != nil {
+			logger.Errorln("时间解析错误")
+		}
 	} else {
-		return RssInfo{}
+		if rsses[url].LastestDate.IsZero() {
+			data.LastestDate = time.Now()
+		} else {
+			data.LastestDate = rsses[url].LastestDate
+		}
 	}
 	return data
 }
