@@ -92,7 +92,7 @@ func (m *lightapp2urlshare) Serve(b *bot.Bot) {
 					logger.Error(err)
 				} else {
 					// "com.tencent.qq.checkin", "com.tencent.groupphoto"
-					if strings.HasPrefix(data.App, "com.tencent") {
+					if data.App == "com.tencent.qq.checkin" || data.App == "com.tencent.groupphoto" {
 						break
 					}
 					m := message.NewSendingMessage()
